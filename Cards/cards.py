@@ -1,4 +1,12 @@
 import random
+import os
+
+def cls():
+    os.system('cls' if os.name=='nt' else 'clear')
+
+def lines(n):
+    for x in range(n):
+        print()
 
 class Card:
     HEARTS = 0
@@ -112,3 +120,8 @@ class Hand(Deck):
             return self.name + '\'s hand: [' + ', '.join(map(lambda card: str(card), self.cards)) + ']'
         else:
             return '[' + ', '.join(map(lambda card: str(card), self.cards)) + ']'
+
+
+deck = Deck()
+hand = Hand("Shyno")
+cls()
