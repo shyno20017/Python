@@ -2,14 +2,10 @@ import sys
 import subprocess
 import os
 
-<<<<<<< HEAD
-firefox = r'C:\Program Files\Mozilla Firefox\firefox.exe'
-=======
 firefox = r'C:\Program Files (x86)\Mozilla Firefox\firefox.exe'
 editor = r'C:\Users\Mohamed\AppData\Local\atom\atom.exe'
 terraria = r"C:\Users\Mohamed\Desktop\Games\Omar's Games\Terraria\Terraria.exe"
 modded = r"C:\Users\Mohamed\Desktop\Games\Omar's Games\Terraria\Terraria (2).exe"
->>>>>>> cc2ab36aac1a071571c4dd9d44cb4a541b5f7c65
 
 cmd = sys.argv[1]
 if cmd == 'openbrowser' or cmd == 'browser':
