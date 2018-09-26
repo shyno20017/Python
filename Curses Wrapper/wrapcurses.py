@@ -11,10 +11,23 @@ class Screen:
 
         self.__color_counter = 1
 
+    @property
+    def width(self):
+        return self.screen.getmaxyx[1]
+
+    @property
+    def height(self):
+        return self.screen.getmaxyx[0]
+
     def set_cursor_position(self, x: int, y: int) -> None:
+        """Set the cursor position to the specified x, y coordinateself.
+        Raises an error if either x or y are out of bounds (less than 0 or greater than the screen boundaries)."""
         self.screen.move(y, x)
 
     def addstr(self, s: str, mod: int = None, x: int = None, y: int = None) -> None:
+        """Draws the specified string at the current cursor position.
+        If x and y coordinates are passed, the cursor position is set to these coordinates.
+        To combine string modifiers (such as a color and an effect), simply add them together and pass them to mod."""
         if x is not None and y is not None:
             self.set_cursor_position(x, y)
 
@@ -24,37 +37,69 @@ class Screen:
             self.screen.addstr(s)
 
     def end(self) -> None:
+        """Ends the current window (Has no effect if called on a window)."""
         unicurses.endwin()
 
     def getch(self) -> int:
+        """Gets the character code of the user's keypress.
+        If nodelay is true, returns -1 if no keypress was registered."""
         return self.screen.getch()
 
     def getkey(self):
+        """Gets the character of the user's keypress.
+        If nodelay is true, raises an error if no keypress was registered."""
         return self.screen.getkey()
 
-    def create_window(self, ncols: int, nrows: int, xoff: int, yoff: int):
-        return Window(ncols, nrows, xoff, yoff)
+    def create_window(self, xoff: int, yoff: int, width: int, height: int):
+        """Creates a window with (width) number of columns, (height) number of rows
+        at (xoff) and (yoff) from the origin of the screen."""
+        return Window(width, height, xoff, yoff)
+
+    def create_panel(self):
+        """Creates a panel using this window (currently does nothing)."""
+        return
+        # return Panel(self)
 
     def create_color(self, text_color: int, background_color: int) -> int:
+        """Creates and returns a Color Combination of text color and background color."""
         unicurses.init_pair(self.__color_counter, text_color, background_color)
         color = unicurses.color_pair(self.__color_counter)
         self.__color_counter += 1
         return color
 
     def echo(self, yes: bool = True) -> None:
+        """If False, then all keypresses by the user are not drawn on the screen."""
         if yes:
             unicurses.echo()
         else:
             unicurses.noecho()
 
     def noecho(self):
+        """Prevents keypresses made by the user from being drawn on the screen.
+        Equivalent to echo(False)."""
         self.echo(False)
 
     def cursor_set(self, yes: bool = True):
+        """Sets wether or not to display the blinking cursor at cursor position."""
         unicurses.curs_set(False)
 
     def keypad(self, yes: bool = False):
+        """If True, then detects ALL keypresses made by the userself.
+        Otherwise, Does not detect non-character keys (such as arrow keys or f1 through f15 keys)."""
         self.screen.keypad(yes)
+
+    def nodelay(self, yes: bool = False):
+        """Sets wether getch() and getkey() wait for user input."""
+        self.screen.nodelay(yes)
+
+    def refresh(self):
+        """Refreshes the screen to draw all changes made.
+        Automatically called when getch() or getkey() are called"""
+        self.screen.refresh()
+
+    def box(self):
+        """Draws a box surrounding the window"""
+        self.screen.box()
 
 
 class Window(Screen):
@@ -62,7 +107,19 @@ class Window(Screen):
         self.screen = unicurses.newwin(nrows, ncols, yoff, xoff)
 
     def end(self) -> None:
+        """Ends the current window (Has no effect if called on a window)"""
         return
+
+# class Panel:
+#     def __init__(self, window):
+#         self.panel = unicurses.new_panel(window.screen)
+#         self.window = window
+#
+#     @classmethod
+#     def refresh(cls):
+#         unicurses.update_panels()
+#         unicurses.doupdate()
+
 
 class COLOR:
     RED = unicurses.COLOR_RED

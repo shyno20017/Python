@@ -10,7 +10,7 @@ class Game:
 		self.screen = screen
 
 		self.score = 0
-		
+
 		self.screen.nodelay(True)
 
 		self.player = Player_Unit(self.screen_width // 2, self.screen_height // 2, "@", self.screen, self)
@@ -34,7 +34,7 @@ class Game:
 			# This is done by checking the number of enemies
 			# If it is less than it is supposed to be,
 			# Then add an Enemy_Unit
-			if len(self.enemies) < (self.NUM_ENEMIES + self.score // 50):
+			if len(self.enemies) < (self.NUM_ENEMIES + self.score // 1):
 				rand_row = randint(0, self.screen_height - 1 - 1) # The second -1 is to avoid spawning an enemy in the last row which would cause an error (and cover the score meter)
 				enemy = Enemy_Unit(self.screen_width - 1, rand_row, "X", self.screen, self)
 				self.enemies.append(enemy)
@@ -48,7 +48,7 @@ class Game:
 			for enemy in self.enemies:
 				if self.player.collide(enemy):
 					alive = False
-					
+
 			self.screen.clear() # Clear the screen before drawing
 
 			# Draw all units
@@ -82,5 +82,4 @@ class Game:
 
 	@property
 	def screen_height(self):
-		return self.screen.getmaxyx()[0]	
-
+		return self.screen.getmaxyx()[0]
