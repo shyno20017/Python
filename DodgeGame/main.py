@@ -1,12 +1,12 @@
-from unicurses import *
+from wrapcurses import Screen, COLOR, KEY, MODIFIER
 from game import Game
-
+import time
 
 def main():
-	stdscr = initscr()
+	stdscr = Screen()
 	game = Game(stdscr)
 	game.run()
-	endwin()
+	stdscr.end()
 
 if __name__ == "__main__":
 	main()

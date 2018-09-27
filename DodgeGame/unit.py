@@ -1,30 +1,19 @@
 import random
 
 class Unit:
-	def __init__(self, x, y, symbol, screen, game):
+	def __init__(self, x, y, symbol, screen, game, modifier = 0):
 		self.screen = screen
 		self.x = x
 		self.y = y
 		self.symbol = symbol
 		self.game = game
-	
-	def draw(self):
-		self.screen.move(self.y, self.x)
-		self.screen.addstr(self.symbol)
+		self.modifier = modifier
 
-	def undraw(self):
-		pass
+	def draw(self):
+		self.screen.addstr(self.symbol, mod = self.modifier, x = self.x, y = self.y)
 
 	def update(self, delta_time):
 		pass
-
-	@property
-	def screen_width(self):
-		return self.screen.getmaxyx()[1]
-
-	@property
-	def screen_height(self):
-		return self.screen.getmaxyx()[0]
 
 	def randint(self, a, b):
 		return random.randint(a, b)
@@ -41,10 +30,9 @@ class Unit:
 				raise Exception("Set X position: X position {} is not int".format(value))
 
 			value = int(value)
-			if value < 0 or value > 1000:  # screen.getmaxyx[1] - 1:
+			if value < 0 or value >= self.screen.width:
 				raise Exception("Set X position: X position {} is out of bounds".format(value))
 
-			self.undraw()
 			self.__dict__['x'] = value
 		elif name == 'y':
 			try:
@@ -54,26 +42,19 @@ class Unit:
 				raise Exception("Set Y position: Y position {} is not int".format(value))
 
 			value = int(value)
-			if value < 0 or value > 1000:   # screen.getmaxyx[0] - 1:
+			if value < 0 or value >= self.screen.height:
 				raise Exception("Set Y position: Y position {} is out of bounds".format(value))
 
-			self.undraw()
 			self.__dict__['y'] = value
 		elif name == 'symbol':
 			try:
-				str(value)
+				value = str(value)
 			except:
 				raise Exception("Set Symbol: Value {} is not str".format(value))
 
-			value = str(value)
 			if len(value) != 1:
 				raise Exception("Set Symbol: Value {} is not str with length 1".format(value))
 
-			self.undraw()
 			self.__dict__['symbol'] = value
 		else:
 			self.__dict__[name] = value
-
-	def __repr__(self):
-		return self.__class__.__name__ + "({}, {}, {}, {})".format(self.x, self.y, self.symbol, self.screen)
-
