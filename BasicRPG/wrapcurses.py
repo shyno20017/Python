@@ -1,24 +1,24 @@
 import unicurses
-from typing import Tuple
+from typing import Tuple as _Tuple
 
 global stdscr
-global ALL_WINDOWS
-global BASE_SCREEN
+global _ALL_WINDOWS
+global _BASE_SCREEN
 global _COLOR_COUNTER
-ALL_WINDOWS = []
+_ALL_WINDOWS = []
 _COLOR_COUNTER = 1
 
 class Screen:
     def __init__(self) -> None:
         global stdscr
-        global BASE_SCREEN
+        global _BASE_SCREEN
 
         stdscr = unicurses.initscr()
         unicurses.start_color()
         unicurses.use_default_colors()
         self.screen = stdscr
 
-        BASE_SCREEN = self
+        _BASE_SCREEN = self
 
     @property
     def width(self) -> int:
@@ -122,8 +122,8 @@ class Screen:
 
     @classmethod
     def update_all(cls):
-        BASE_SCREEN.refresh()
-        for window in ALL_WINDOWS:
+        _BASE_SCREEN.refresh()
+        for window in _ALL_WINDOWS:
             window.refresh()
 
     def __str__(self):
@@ -132,10 +132,10 @@ class Screen:
 
 class Window(Screen):
     def __init__(self, xoff: int, yoff: int, ncols: int, nrows: int, name: str = None)  -> None:
-        global ALL_WINDOWS
+        global _ALL_WINDOWS
 
         self.screen = unicurses.newwin(nrows, ncols, yoff, xoff)
-        ALL_WINDOWS.append(self)
+        _ALL_WINDOWS.append(self)
 
         self.name = name
 
@@ -149,35 +149,35 @@ class Window(Screen):
     def top(self) -> None:
         """Sets this window to the top of the drawing buffer (In other words, it will be drawn above everything else)."""
         # We remove ourselves from the list then insert ourselves to the end of the list
-        current_index = ALL_WINDOWS.index(self)
-        ALL_WINDOWS.pop(current_index)
-        ALL_WINDOWS.append(self)
+        current_index = _ALL_WINDOWS.index(self)
+        _ALL_WINDOWS.pop(current_index)
+        _ALL_WINDOWS.append(self)
 
 
     def bottom(self) -> None:
         """Sets this window to the bottom of the drawing buffer (In other words, it will be drawn under everything else)."""
         # We remove ourselves from the list then insert ourselves to the beggining of the list
-        current_index = ALL_WINDOWS.index(self)
-        ALL_WINDOWS.pop(current_index)
-        ALL_WINDOWS.insert(0, self)
+        current_index = _ALL_WINDOWS.index(self)
+        _ALL_WINDOWS.pop(current_index)
+        _ALL_WINDOWS.insert(0, self)
 
     def get_above(self):
         """Returns the window above this window in the drawing buffer.
         If this window is at the top, returns the None."""
-        current_index = ALL_WINDOWS.index(self)
-        if current_index == len(ALL_WINDOWS) - 1:
+        current_index = _ALL_WINDOWS.index(self)
+        if current_index == len(_ALL_WINDOWS) - 1:
             return None
 
-        return ALL_WINDOWS[current_index + 1]
+        return _ALL_WINDOWS[current_index + 1]
 
     def get_below(self):
         """Returns the window below this window in the drawing buffer.
         If this window is at the bottom, returns the standard screen."""
-        current_index = ALL_WINDOWS.index(self)
+        current_index = _ALL_WINDOWS.index(self)
         if current_index == 0:
-            return BASE_SCREEN
+            return _BASE_SCREEN
 
-        return ALL_WINDOWS[current_index - 1]
+        return _ALL_WINDOWS[current_index - 1]
 
     def __str__(self):
         if self.name is None:
@@ -187,11 +187,11 @@ class Window(Screen):
 
 
 def update_all():
-    global BASE_SCREEN
-    global ALL_WINDOWS
+    global _BASE_SCREEN
+    global _ALL_WINDOWS
 
-    BASE_SCREEN.refresh()
-    for window in ALL_WINDOWS:
+    _BASE_SCREEN.refresh()
+    for window in _ALL_WINDOWS:
         window.refresh()
 
 # class Panel:
@@ -234,7 +234,7 @@ class COLOR:
         return color_id
 
     @classmethod
-    def create_color_and_id(cls, text_color: int, background_color: int) -> Tuple[int, int]:
+    def create_color_and_id(cls, text_color: int, background_color: int) -> _Tuple[int, int]:
         """Creates and returns the color and id of a Color Combination of text color and background color."""
         global _COLOR_COUNTER
         unicurses.init_pair(_COLOR_COUNTER, text_color, background_color)

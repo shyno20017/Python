@@ -16,9 +16,9 @@ class Game:
 
 		self.game_window = screen.create_window(0, 0, self.screen.width, self.screen.height - 1) # This -1 leaves the last line blank for the score
 
-		self.player_color = self.screen.create_color(COLOR.CYAN, COLOR.BLACK) + MODIFIER.BOLD
-		self.enemy_color = self.screen.create_color(COLOR.RED, COLOR.BLACK) + MODIFIER.BOLD
-		self.score_color = self.screen.create_color(COLOR.YELLOW, COLOR.BLACK) + MODIFIER.BOLD
+		self.player_color = COLOR.create_color(COLOR.CYAN, COLOR.BLACK) + MODIFIER.BOLD
+		self.enemy_color = COLOR.create_color(COLOR.RED, COLOR.BLACK) + MODIFIER.BOLD
+		self.score_color = COLOR.create_color(COLOR.YELLOW, COLOR.BLACK) + MODIFIER.BOLD
 
 		self.score = 0
 

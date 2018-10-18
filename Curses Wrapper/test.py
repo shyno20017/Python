@@ -1,27 +1,39 @@
-from wrapcurses import Screen, COLOR, KEY, MODIFIER, unicurses
+from wrapcurses import Screen, Window, update_all, COLOR, KEY, MODIFIER
+# from time import sleep
+#
+# stdscr = Screen()
+# stdscr.cursor_set(False)
+# stdscr.echo(False)
+# stdscr.keypad(True)
+# # stdscr.nodelay(True)
+#
+# dude = Window(3, 3, 1, 1, "Dude")
+# grass = Window(1, 1, 20, 20, "Grass")
+#
+# red = COLOR.create_color(COLOR.RED, COLOR.BLACK)
+# green = COLOR.create_color(COLOR.GREEN, COLOR.BLACK)
+#
+# dude.top()
+#
+# dude.bkgd("@", red)
+# grass.bkgd("X", green)
+#
+# while True:
+#     update_all(refresh_base = False)
+#     key = stdscr.getch()
+#     if key == KEY.LEFT_KEY:
+#         dude.move(dude.xpos - 1, dude.ypos)
+#     elif key == KEY.RIGHT_KEY:
+#         dude.move(dude.xpos + 1, dude.ypos)
+#     elif key == KEY.ESC:
+#         break
+#
+#
+#
+# stdscr.end()
 
-stdscr = Screen()
-stdscr.box()
-stdscr.set_cursor_position(1, 1)
-stdscr.addstr("Hello World!")
 
-window_one = stdscr.create_window(2, 2, 10, 10)
-window_one.box()
-window_one.addstr("Hello People!", x = 1, y = 1)
-
-window_two = stdscr.create_window(15, 2, 10, 10)
-window_two.box()
-window_two.addstr("Hello YouTube!", x = 1, y = 1)
-
-
-stdscr.refresh()
-window_one.refresh()
-window_two.refresh()
-
-print(stdscr.getmaxyx())
-print(window_one.getmaxyx())
-print(window_two.getmaxyx())
-
-stdscr.getch()
-
-stdscr.end()
+# stdscr = Screen()
+#
+#
+# stdscr.end()
